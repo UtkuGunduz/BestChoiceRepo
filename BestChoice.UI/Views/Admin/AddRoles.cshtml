@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "blank";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+<div id="page-wrapper">
+    <div id="container">
+        <h2>Role Management</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table" id="tbRoles">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Role Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h3 id="roleTitle">Add Role</h3> <hr />
+                <div class="mb-3">
+                    <label>Role Name</label>
+                    <input type="text" class="form-control" id="txtRoleName" />
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" id="btnAddRole">Add Role</button>
+                </div>
+                <div class="alert" id="roleResult"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+            var token = localStorage.getItem("token");
+
+            loadRoles();
+
+            function loadRoles() {
+                $.ajax({
+                    url: ApiBaseUrl + "Admin/Roles", // Assuming your Roles endpoint is under Admin
+                    type: "GET",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (data) {
+                        var tableBody = $("#tbRoles tbody");
+                        tableBody.empty();
+
+                        $.each(data, function (index, role) {
+                            tableBody.append(
+                                "<tr>" +
+                                "<td>" + (index + 1) + "</td>" +
+                                "<td>" + role.name + "</td>" +
+                                "</tr>"
+                            );
+                        });
+                    },
+                    error: function () {
+                        console.error("Error loading roles.");
+                    }
+                });
+            }
+
+            $("#btnAddRole").click(function () {
+                var roleName = $("#txtRoleName").val();
+
+                if (roleName === "" || roleName === null) {
+                    $("#roleResult")
+                        .removeClass()
+                        .addClass("alert alert-danger")
+                        .html("Please Enter a Role Name!");
+                    return false;
+                }
+
+                $.ajax({
+                    url: ApiBaseUrl + "Admin/RoleAdd", // Assuming your AddRole endpoint is under Admin
+                    type: "POST",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({ name: roleName }),
+                    success: function (data) {
+                        if (data.status) {
+                        } else {
+                            alert(data.message);
+                        }
+                        loadRoles();
+                        },
+                    error: function (e) {
+                        alert("An error occurred while adding the role.");
+                    }
+                });
+            });
+        });
+    </script>
+}
+

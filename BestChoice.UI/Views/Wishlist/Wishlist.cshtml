@@ -1,0 +1,180 @@
+﻿@{
+    Layout = "_Layout1";
+}
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Wishlist
+            </div>
+        </div>
+    </div>
+    <section class="mt-60 mb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center" id="wishlistTable">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th scope="col" colspan="2">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Stock Status</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var token = localStorage.getItem("token");
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+
+            function getUserWishlist() {
+                $.ajax({
+                    url: ApiBaseUrl + "Wishlist/GetUserWishlist/",
+                    type: "GET",
+                    contentType: "application/json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (data) {
+                        updateWishlistTable(data);
+                    },
+                    error: function () {
+                        console.log("Error while fetching user wishlist.");
+                    }
+                });
+            }
+
+            function updateWishlistTable(wishlist) {
+                var tableBody = $('#wishlistTable tbody');
+                tableBody.empty();
+
+                $.each(wishlist.items, function (index, item) {
+                    var imageUrl = item.productImageUrl ? item.productImageUrl : '/images/shop/placeholder.jpg';
+                    var stockClass = item.productStockQuantity > 0 ? 'color3 font-weight-bold' : 'text-danger font-weight-bold';
+                    var stockText = item.productStockQuantity > 0 ? 'In Stock' : 'Out of Stock';
+
+                    var tableRow = `
+                        <tr data-id="${item.id}">
+                        <td class="image product-thumbnail"><img src="${imageUrl}" alt="#"></td>
+                        <td class="product-des product-name">
+                            <p class="product-name"><a href="shop-product-right.html">${item.productName}</a></p>
+                            <p class="font-xs">${item.productDescription}</p>
+                        </td>
+                        <td class="price" data-title="Price"><span>$${item.productPrice.toFixed(2)}</span></td>
+                        <td class="text-center" data-title="Stock">
+                            <span class="${stockClass}">${stockText}</span>
+                        </td>
+                        <td class="text-right" data-title="Cart">
+                            <button class="btn btn-rounded btn-sm"><i class="far fa-shopping-bag mr-5 add-to-cart"></i>Add to cart</button>
+                        </td>
+                        <td class="action" data-title="Remove"><a href="#"><i class="fa fa-trash-alt"></i></a></td>
+                        </tr>`;
+                    tableBody.append(tableRow);
+                });
+            }
+
+            getUserWishlist();
+
+            $(document).on("click", ".add-to-wishlist", function () {
+                // You might not need this functionality if adding to wishlist is handled elsewhere
+            });
+
+            $(document).on("click", ".fa-trash-alt", function () {
+                var productId = $(this).closest("tr").data("id");
+
+                $.ajax({
+                    url: ApiBaseUrl + "Wishlist/RemoveFromUserWishlist/" + productId,
+                    type: "DELETE",
+                    contentType: "application/json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (response) {
+                        getUserWishlist();
+                        console.log(response);
+                    },
+                    error: function () {
+                        console.log("Error while removing product from wishlist.");
+                    }
+                });
+            });
+
+            $(document).on("click", ".add-to-cart", function () {
+                var productId = $(this).data("product-id");
+                var quantity = 1;
+
+                var dto = {
+                    productId: productId,
+                    quantity: quantity
+                };
+
+                $.ajax({
+                    url: ApiBaseUrl + 'Cart/AddToCart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    data: JSON.stringify(dto),
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        var token = localStorage.getItem("token");
+        var userRoles = [];
+        var apiUrl = "https://localhost:7163/";
+        var userId = ";"
+
+        if (token == null) {
+            $(".NotLoggedin").show();
+            $(".Loggedin").hide();
+        } else {
+            $(".NotLoggedin").hide();
+            $(".Loggedin").show();
+            var payload = parseJwt(token);
+            var username = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+            userRoles = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            var userPicUrl = apiUrl + "Profile/" + payload["userPicUrl"];
+            userId = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            $("#userPic").attr("src", userPicUrl);
+            $("#UserName").html(username);
+        }
+
+        $(".Logout").click(function () {
+            localStorage.removeItem("token");
+            location.href = "/Home/Login";
+        });
+
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+    </script>
+}

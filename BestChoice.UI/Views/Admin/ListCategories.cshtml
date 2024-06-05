@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "CategoryManagement";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+<div id="page-wrapper">
+    <div id="container">
+        <h2>Categories</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table" id="tbCategories">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Category Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+            var token = localStorage.getItem("token");
+            loadCategories();
+
+            function loadCategories() {
+                $.ajax({
+                    url: ApiBaseUrl + "Categories/GetList",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        var tableBody = $("#tbCategories tbody");
+                        tableBody.empty();
+
+                        $.each(data, function (index, category) {
+                            tableBody.append(
+                                "<tr>" +
+                                "<td>" + (index + 1) + "</td>" +
+                                "<td>" + category.name + "</td>" +
+                                "</tr>"
+                            );
+                        });
+                    },
+                    error: function () {
+                        console.error("Error loading categories.");
+                    }
+                });
+            }
+        });
+    </script>
+}

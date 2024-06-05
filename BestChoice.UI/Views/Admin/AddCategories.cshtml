@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "AddCategories";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+<div id="page-wrapper">
+    <div id="container">
+        <h2>Category Management</h2> <hr />
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table" id="tbCategories">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Category Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h3 id="catTitle">New Category</h3><hr />
+                <div class="mb-3">
+                    <label>Category Name</label>
+                    <input type="text" class="form-control" id="txtCatName" />
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary" id="btnAddCategory">Add Category</button>
+                </div>
+                <div class="alert" id="catResult"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+            var token = localStorage.getItem("token");
+            loadCategories();
+
+            function loadCategories() {
+                $("#btnCancel").hide();
+                $("#Title").html("New Category"); // Assuming you have a Title element for the form
+                $("#txtName").val("");
+                $("#txtId").val("0");
+
+                $("#tbCategories tbody").empty();
+                $.ajax({
+                    url: ApiBaseUrl + "Categories/GetList",
+                    type: "GET",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (data) {
+                        var tableBody = $("#tbCategories tbody");
+                        tableBody.empty();
+
+                        $.each(data, function (index, category) {
+                            tableBody.append(
+                                "<tr>" +
+                                "<td>" + (index + 1) + "</td>" +
+                                "<td>" + category.name + "</td>" +
+                                "</tr>"
+                            );
+                        });
+                    },
+                    error: function () {
+                        console.error("Error loading categories.");
+                    }
+                });
+            }
+
+            $("#btnAddCategory").click(function () {
+                var categoryName = $("#txtCatName").val();
+
+                if (categoryName === "" || categoryName === null) {
+                    $("#catResult")
+                        .removeClass()
+                        .addClass("alert alert-danger")
+                        .html("Please Enter a Category Name!");
+                    return false;
+                }
+
+                $.ajax({
+                    url: ApiBaseUrl + "Categories/AddCategory",
+                    type: "POST",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify({ name: categoryName }),
+                    success: function (data) {
+                        $("#catResult")
+                            .removeClass()
+                            .addClass("alert alert-success")
+                            .html(data.Message);
+                        $("#txtCatName").val("");
+                        loadCategories();
+                    },
+                    error: function (error) {
+                        console.error("Error adding category:", error.responseText);
+                        $("#catResult")
+                            .removeClass()
+                            .addClass("alert alert-danger")
+                            .html(error.responseText);
+                    }
+                });
+                loadCategories();
+            });
+
+            $("#btnCancel").click(function () {
+                loadCategories();
+            });
+        });
+    </script>
+}

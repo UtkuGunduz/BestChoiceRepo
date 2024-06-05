@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "CategoryManagement";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+    <div id="page-wrapper">
+        <div id="container">
+            <h2>Categories</h2>
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table" id="tbCategories">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Category Name</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+
+                    <h3 id="Title"></h3><hr />
+
+                    <div class="mb-3">
+                        <label>Category Name</label>
+                        <input type="text" class="form-control" id="txtName" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="hidden" id="txtId" />
+                        <button class="btn btn-primary" id="btnSave">Save</button>
+                        <button class="btn btn-secondary" id="btnCancel">Cancel</button>
+                        <button class="btn btn-danger" id="btnDelete">Delete</button>
+                    </div>
+                    <div class="alert" id="result"></div>
+                </div>
+            </div>
+
+
+
+
+
+
+            @section Scripts{
+                <script>
+                    $(document).ready(function () {
+                        LoadCategories();
+                        function LoadCategories() {
+                            $("#btnCancel").hide();
+                            $("#btnDelete").hide();
+                            $("#Title").html("New Category");
+                            $("#txtName").val("");
+                            $("#txtId").val("0");
+                            $("#tbCategories tbody").empty();
+                            $.ajax({
+                                url: "/Admin/CategoryListAjax",
+                                type: "Get",
+                                data: {},
+                                success: function (data) {
+                                    var i = 1;
+                                    $.each(data, function (index, item) {
+                                        var category = '<tr id="' + item.id + '"><td>' + i + ' </td> <td>' + item.name + '</td><td><button class="btn btn-warning edit">Edit</button></td></tr>';
+                                        $("#tbCategories tbody").append(category);
+                                        i++;
+                                    });
+                                },
+                                error: function (e) {
+                                    console.log(e);
+                                },
+                            });
+                        }
+        
+                        $("#btnSave").click(function () {
+                            var name = $("#txtName").val();
+
+                            var id = $("#txtId").val();
+
+                            if (name == "" || name == null) {
+                                $("#result")
+                                    .removeClass()
+                                    .addClass("alert alert-danger")
+                                    .html("Add Category!");
+                                return false;
+                            }
+
+                            $.ajax({
+                                url: "/Admin/CategoryAddEditAjax",
+                                type: "POST",
+                                data: { id: id, name: name },
+                                success: function (data) {
+
+                                        $("#result")
+                                            .removeClass()
+                                            .addClass("alert alert-success")
+                                            .html(data.message);
+                                        LoadCategories();
+                                },
+                                error: function (e) { }
+                            });
+                        });
+
+                        $(document).on("click", ".edit", function () {
+                            var id = $(this).closest("tr").attr("id");
+                            $("#Title").html("Category Edit");
+                            $("#btnCancel").show();
+                            $("#btnDelete").show();
+                            $.ajax({
+                                url: "/admin/CategoryByIdAjax",
+                                type: "Get",
+                                data: { id: id },
+                                success: function (data) {
+                                    $("#txtName").val(data.name);
+                                    $("#txtId").val(data.id);
+
+                                },
+                                error: function () { }
+                            });
+                        });
+
+                        $("#btnCancel").click(function () {
+                            LoadCategories();
+                        });
+
+                        $("#btnDelete").click(function () {
+                            var id = $("#txtId").val();
+                            $.ajax({
+                                url: "/admin/CategoryRemoveAjax",
+                                type: "Get",
+                                data: { id: id },
+                                success: function (data) {
+
+                                        $("#result")
+                                            .removeClass()
+                                            .addClass("alert alert-success")
+                                            .html(data.message);
+                                        LoadCategories();
+
+                                },
+                                error: function () { }
+                            });
+                        });
+                    });
+                </script>
+            }
+        </div>
+    </div>

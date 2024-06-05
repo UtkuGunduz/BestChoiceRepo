@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewData["Title"] = "blank";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="h3 mb-4 text-gray-800">Roller</h2>
+        <table class="table" id="tbRoleList">
+            <thead>
+                <tr>
+                    <th>SN</th>
+                    <th>Rol Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2 class="h3 mb-4 text-gray-800">Rol Ekle - Düzenle</h2>
+        <div class="mb-2">
+            <label>Yeni Rol Adı</label>
+            <input type="text" class="form-control" id="txtRoleName" />
+        </div>
+        <div class="mb-2">
+            <input type="hidden" id="txtRoleId" />
+        </div>
+        <div class="mb-2" id="role-form-buttons" style="display: none;">
+            <a id="btnCancel" class="btn btn-danger btn-circle" title="Vazgeç"><i class="fas fa-arrow-left"></i></a>
+            <a id="btnSave" class="btn btn-primary btn-circle ml-1" title="Kaydet"><i class="fas fa-save"></i></a>
+
+        </div>
+
+        <div class="alert" id="divResult"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var token = localStorage.getItem("token");
+            if (token == "" || token == null) {
+                location.href = "/Home/Login";
+                return false;
+            }
+
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+            loadRoles();
+
+            function loadRoles() {
+                $.ajax({
+                    url: ApiBaseUrl + "Admin/Roles", // Assuming your Roles endpoint is under Admin
+                    type: "GET",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (data) {
+                        var tableBody = $("#tbRoleList tbody");
+                        tableBody.empty();
+
+                        $.each(data, function (index, role) {
+                            tableBody.append(
+                                "<tr>" +
+                                "<td>" + (index + 1) + "</td>" +
+                                "<td>" + role.name + "</td>" +
+                                "<td><a href='#' class='btn btn-primary btn-sm edit' data-role-id='" + role.id + "'>Değiştir</a></td>" +
+                                "</tr>"
+                            );
+                        });
+                    },
+                    error: function () {
+                        console.error("Error loading roles.");
+                    }
+                });
+            }
+
+            $(document).on("click", ".edit", function (e) {
+                e.preventDefault(); // Prevent default behavior of the link
+
+                var roleId = $(this).data("role-id");
+
+                // Assuming you retrieve role details using another AJAX call
+                $.ajax({
+                    url: ApiBaseUrl + "Admin/GetRole/" + roleId, // Replace with your endpoint to get role details
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    contentType: "application/json",
+                    success: function (roleData) {
+                        $("#txtRoleName").val(roleData.name); // Set input value to role name
+                        $("#txtRoleId").val(roleId);
+                        $("#role-form-buttons").show(); // Make button section visible
+                    },
+                    error: function (e) {
+                        console.error("Error fetching role details:", e);
+                    }
+                });
+            });
+
+            $("#btnCancel").click(function () {
+                $("#role-form-buttons").hide(); // Hide button section on cancel
+                $("#txtRoleName").val("");
+                $("#txtRoleId").val(0);
+
+            });
+
+            $("#btnSave").click(function () {
+                var roleName = $("#txtRoleName").val();
+                var roleId = $("#txtRoleId").val();
+
+                if (roleName == "") {
+                    $("#divResult")
+                        .show()
+                        .removeClass()
+                        .addClass("alert alert-danger")
+                        .html("Lütfen rol adı giriniz!")
+                        .fadeOut(5000);
+                    return false;
+                }
+
+                var ajaxMethod = "";
+                if (roleId == 0) {
+                    ajaxMethod = "POST";
+                    url = ApiBaseUrl + "Admin/RoleAdd";
+                } else {
+                    ajaxMethod = "PUT";
+                    url = ApiBaseUrl + "Admin/RoleEdit/" + roleId;
+                }
+
+                $.ajax({
+                    url: url,
+                    method: ajaxMethod,
+                    data: JSON.stringify({ id: roleId, name: roleName }), // Assuming your model property is named "name"
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    contentType: "application/json",
+                    success: function (data) {
+                        if (data.status || data.success) { // Adjust based on your API's response structure
+                            $("#divResult")
+                                .show()
+                                .removeClass()
+                                .addClass("alert alert-success")
+                                .html(data.message || "Rol başarıyla kaydedildi.")
+                                .fadeOut(5000);
+                                loadRoles();
+                            $("#txtRoleName").val("");
+                            $("#txtRoleId").val(0);
+                            $("#btnDelete").hide();
+                        } else {
+                            $("#divResult")
+                                .show()
+                                .removeClass()
+                                .addClass("alert alert-danger")
+                                .html(data.message || "Rol kaydedilemedi!")
+                                .fadeOut(5000);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+
+            });
+        });
+    </script>
+}
+

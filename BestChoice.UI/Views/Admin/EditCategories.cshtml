@@ -1,0 +1,174 @@
+﻿@{
+    ViewData["Title"] = "CategoryManagement";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="h3 mb-4 text-gray-800">Kategoriler</h2>
+        <table class="table" id="tbCategoryList">
+            <thead>
+                <tr>
+                    <th>SN</th>
+                    <th>Kategori Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <h2 class="h3 mb-4 text-gray-800">Kategori Ekle - Düzenle</h2>
+        <div class="mb-2">
+            <label>Yeni Kategori Adı</label>
+            <input type="text" class="form-control" id="txtCategoryName" />
+        </div>
+        <div class="mb-2">
+            <input type="hidden" id="txtCategoryId" />
+        </div>
+        <div class="mb-2" id="category-form-buttons" style="display: none;">
+            <a id="btnCancel" class="btn btn-danger btn-circle" title="Vazgeç"><i class="fas fa-arrow-left"></i></a>
+            <a id="btnSave" class="btn btn-primary btn-circle ml-1" title="Kaydet"><i class="fas fa-save"></i></a>
+        </div>
+
+        <div class="alert" id="divResult"></div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var token = localStorage.getItem("token");
+            if (token == "" || token == null) {
+                location.href = "/Home/Login";
+                return false;
+            }
+
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+            loadCategories();
+
+            function loadCategories() {
+                $.ajax({
+                    url: ApiBaseUrl + "Categories/GetList", // Assuming your Roles endpoint is under Admin
+                    type: "GET",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (data) {
+                        var tableBody = $("#tbCategoryList tbody");
+                        tableBody.empty();
+
+                        $.each(data, function (index, category) {
+                            tableBody.append(
+                                "<tr>" +
+                                "<td>" + (index + 1) + "</td>" +
+                                "<td>" + category.name + "</td>" +
+                                "<td><a href='#' class='btn btn-primary btn-sm edit' data-category-id='" + category.id + "'>Değiştir</a></td>" +
+                                "</tr>"
+                            );
+                        });
+                    },
+                    error: function () {
+                        console.error("Error loading categories.");
+                    }
+                });
+            }
+
+            $(document).on("click", ".edit", function (e) {
+                e.preventDefault(); // Prevent default behavior of the link
+
+                var categoryId = $(this).data("category-id");
+
+                // Assuming you retrieve category details using another AJAX call
+                $.ajax({
+                    url: ApiBaseUrl + "Categories/Get/" + categoryId, // Replace with your endpoint to get category details
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    contentType: "application/json",
+                    success: function (categoryData) {
+                        $("#txtCategoryName").val(categoryData.name); // Set input value to category name
+                        $("#txtCategoryId").val(categoryId);
+                        $("#category-form-buttons").show(); // Make button section visible
+                    },
+                    error: function (e) {
+                        console.error("Error fetching category details:", e);
+                    }
+                });
+            });
+
+            $("#btnCancel").click(function () {
+                $("#category-form-buttons").hide(); // Hide button section on cancel
+                $("#txtCategoryName").val("");
+                $("#txtCategoryId").val(0);
+            });
+
+            $("#btnSave").click(function () {
+                var categoryName = $("#txtCategoryName").val();
+                var categoryId = $("#txtCategoryId").val();
+
+                if (categoryName == "") {
+                    $("#divResult")
+                        .show()
+                        .removeClass()
+                        .addClass("alert alert-danger")
+                        .html("Lütfen kategori adı giriniz!")
+                        .fadeOut(5000);
+                    return false;
+                }
+
+                var ajaxMethod = "";
+                if (categoryId == 0) {
+                    ajaxMethod = "POST";
+                    url = ApiBaseUrl + "Categories/AddCategory";
+                } else {
+                    ajaxMethod = "PUT";
+                    url = ApiBaseUrl + "Categories/EditCategory/";
+                }
+
+                $.ajax({
+                    url: url,
+                    method: ajaxMethod,
+                    data: JSON.stringify({ id: categoryId, name: categoryName }), // Assuming your model property is named "name"
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    contentType: "application/json",
+                    success: function (data) {
+                        if (data.status || data.success) { // Adjust based on your API's response structure
+                            $("#divResult")
+                                .show()
+                                .removeClass()
+                                .addClass("alert alert-success")
+                                .html(data.message || "Kategori başarıyla kaydedildi.")
+                                .fadeOut(5000);
+                            loadCategories();
+                            $("#txtCategoryName").val("");
+                            $("#txtCategoryId").val(0);
+                            $("#btnDelete").hide();
+                        } else {
+                            $("#divResult")
+                                .show()
+                                .removeClass()
+                                .addClass("alert alert-danger")
+                                .html(data.message || "Kategori kaydedilemedi!")
+                                .fadeOut(5000);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+
+            });
+        });
+    </script>
+}

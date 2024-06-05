@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "ListRoles";
+    Layout = "~/Views/Shared/_LayoutSBAdmin.cshtml";
+}
+
+<div id="page-wrapper">
+    <div id="container">
+        <h2>Roles</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table" id="tbRoles">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Role Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+            var token = localStorage.getItem("token");
+            loadRoles();
+
+            function loadRoles() {
+                $.ajax({
+                    url: ApiBaseUrl + "Admin/Roles",
+                    type: "GET",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (data) {
+                        var tableBody = $("#tbRoles tbody");
+                        tableBody.empty();
+
+                        $.each(data, function (index, role) {
+                            tableBody.append(
+                                "<tr>" +
+                                "<td>" + (index + 1) + "</td>" +
+                                "<td>" + role.name + "</td>" +
+                                "<td>" +
+                                "</tr>"
+                            );
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Error loading roles:", error);
+                    }
+                });
+            }
+        });
+    </script>
+}
+

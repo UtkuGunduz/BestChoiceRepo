@@ -1,0 +1,537 @@
+﻿@{
+    Layout = "_Layout1";
+}
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+            </div>
+        </div>
+    </div>
+    <section class="mt-60 mb-60">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p> We found <strong class="text-brand">688</strong> items for you!</p>
+                        </div>
+                        <div class="sort-by-product-area">
+                            <div class="sort-by-cover mr-10">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fa fa-th"></i>Show:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> 50 <i class="far fa-angle-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">50</a></li>
+                                        <li><a href="#">100</a></li>
+                                        <li><a href="#">150</a></li>
+                                        <li><a href="#">200</a></li>
+                                        <li><a href="#">All</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sort-by-cover">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fa fa-sort-amount-down"></i>Sort by:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> Featured <i class="far fa-angle-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">Featured</a></li>
+                                        <li><a href="#">Price: Low to High</a></li>
+                                        <li><a href="#">Price: High to Low</a></li>
+                                        <li><a href="#">Release Date</a></li>
+                                        <li><a href="#">Avg. Rating</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row product-grid-3">
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="shop-product-right.html">
+                                            <img class="default-img" src="~/images/shop/product-2-1.jpg" alt="">
+                                            <img class="hover-img" src="~/images/shop/product-2-2.jpg" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Quick view" class="action-btn hover-up"><i class="far fa-search"></i></a>
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="far fa-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="far fa-exchange-alt"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">Hot</span>
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap">
+                                    <div class="product-category">
+                                        <a href="shop-grid-right.html">Music</a>
+                                    </div>
+                                    <h2><a href="shop-product-right.html">Headphone Ultra Bass</a></h2>
+                                    <div class="rating-result" title="90%">
+                                        <span>
+                                            <span>90%</span>
+                                        </span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span>$238.85 </span>
+                                        <span class="old-price">$245.8</span>
+                                    </div>
+                                    <div class="product-action-1 show">
+                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="far fa-shopping-bag"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--pagination-->
+                    <div class="pagination-area mt-15 mb-md-5 mb-lg-0">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                                <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i> </a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="widget-area">
+                        <!--Widget categories-->
+                        <div class="sidebar-widget widget_categories mb-30 p-30 bg-grey border-radius-10">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title mb-10">Categories</h5>
+                                <div class="bt-1 border-color-1"></div>
+                            </div>
+                            <div class="">
+                                <ul class="categor-list" id="categoryList">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Fillter By Price -->
+                        <div class="sidebar-widget price_range range mb-30">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title mb-10">Fill by price</h5>
+                                <div class="bt-1 border-color-1"></div>
+                            </div>
+                            <div class="price-filter">
+                                <div class="price-filter-inner">
+                                    <div id="slider-range"></div>
+                                    <div class="price_slider_amount">
+                                        <div class="label-input">
+                                            <span>Range:</span><input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group">
+                                <div class="list-group-item mb-10 mt-10">
+                                    <label class="fw-900">Color</label>
+                                    <div class="custome-checkbox">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                        <label class="form-check-label" for="exampleCheckbox1"><span>Red (56)</span></label>
+                                        <br>
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox2" value="">
+                                        <label class="form-check-label" for="exampleCheckbox2"><span>Green (78)</span></label>
+                                        <br>
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox3" value="">
+                                        <label class="form-check-label" for="exampleCheckbox3"><span>Blue (54)</span></label>
+                                    </div>
+                                    <label class="fw-900 mt-15">Item Condition</label>
+                                    <div class="custome-checkbox">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="">
+                                        <label class="form-check-label" for="exampleCheckbox11"><span>New (1506)</span></label>
+                                        <br>
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox21" value="">
+                                        <label class="form-check-label" for="exampleCheckbox21"><span>Refurbished (27)</span></label>
+                                        <br>
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox31" value="">
+                                        <label class="form-check-label" for="exampleCheckbox31"><span>Used (45)</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fa fa-filter mr-5 ml-0"></i> Fillter</a>
+                        </div>
+                        <!-- Product sidebar Widget -->
+                        <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title mb-10">New products</h5>
+                                <div class="bt-1 border-color-1"></div>
+                            </div>
+                            <div class="single-post clearfix">
+                                <div class="image">
+                                    <img src="~/images/shop/thumbnail-3.jpg" alt="#">
+                                </div>
+                                <div class="content pt-10">
+                                    <h5><a href="shop-product-detail.html">Chen Cardigan</a></h5>
+                                    <p class="price mb-0 mt-5">$99.50</p>
+                                    <div class="product-rate">
+                                        <div class="product-rating" style="width:90%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-post clearfix">
+                                <div class="image">
+                                    <img src="~/images/shop/thumbnail-4.jpg" alt="#">
+                                </div>
+                                <div class="content pt-10">
+                                    <h6><a href="shop-product-detail.html">Chen Sweater</a></h6>
+                                    <p class="price mb-0 mt-5">$89.50</p>
+                                    <div class="product-rate">
+                                        <div class="product-rating" style="width:80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-post clearfix">
+                                <div class="image">
+                                    <img src="~/images/shop/thumbnail-5.jpg" alt="#">
+                                </div>
+                                <div class="content pt-10">
+                                    <h6><a href="shop-product-detail.html">Colorful Jacket</a></h6>
+                                    <p class="price mb-0 mt-5">$25</p>
+                                    <div class="product-rate">
+                                        <div class="product-rating" style="width:60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Widget ads-->
+                        <div class="sidebar-widget widget-ads mb-30">
+                            <div class="banner-img banner-1 wow fadeIn  animated" style="visibility: visible; animation-name: fadeIn;">
+                                <img class="border-radius-10" src="~/images/banner/banner-5.jpg" alt="">
+                                <div class="banner-text">
+                                    <span>Gaming Area</span>
+                                    <h4>Save 17% on <br>Assus Laptop</h4>
+                                    <a href="shop-grid-right.html">Shop Now <i class="fa fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Widget categories-->
+                        <div class="sidebar-widget widget_categories mb-50 p-30 bg-grey border-radius-10">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title mb-10">Manufacturers</h5>
+                                <div class="bt-1 border-color-1"></div>
+                            </div>
+                            <div class="">
+                                <ul class="categor-list">
+                                    <li class="cat-item text-muted"><a href="shop-grid-right.html">Adidas</a>(125)</li>
+                                    <li class="cat-item text-muted"><a href="shop-grid-right.html">Armani</a>(68)</li>
+                                    <li class="cat-item text-muted"><a href="shop-grid-right.html">Burberry</a>(274)</li>
+                                    <li class="cat-item text-muted"><a href="shop-grid-right.html">Chanel</a>(152)</li>
+                                    <li class="cat-item text-muted"><a href="shop-grid-right.html">Prada</a>(302)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var ApiBaseUrl = "@ViewBag.ApiBaseUrl";
+
+            function initializeAddToWishlist() {
+                $(document).on('click', '.add-to-wishlist', function (e) {
+                    e.preventDefault();
+                    var productId = $(this).data('id');
+                    var token = localStorage.getItem("token");
+
+                    $.ajax({
+                        url: ApiBaseUrl + "Wishlist/AddToUserWishlist/", // WishlistController action
+                        type: 'POST',
+                        contentType: 'application/json',
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        data: JSON.stringify({ productId: productId, userId: userId }),
+                        success: function (response) {
+                            alert("Ürün başarıyla favorilere eklendi!");
+
+                            // Consider handling potential response data here (e.g., update UI)
+                            console.log("Wishlist update response:", response);
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status === 401) {
+                                alert("Lütfen giriş yapınız.");
+                            } else {
+                                alert(xhr.responseText);
+                                alert("Ürün favorilere eklenirken bir hata oluştu.");
+                            }
+                        }
+                    });
+                });
+            }
+
+            // Cart Functionality
+            function initializeAddToCart() {
+                $(document).on('click', '.add-to-cart', function (e) {
+                    e.preventDefault();
+                    var productId = $(this).data('id');
+                    var token = localStorage.getItem("token");
+                    var quantity = 1;
+
+                    $.ajax({
+                        url: ApiBaseUrl + "Cart/AddToCart", // CartController action
+                        type: 'POST',
+                        contentType: 'application/json',
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        },
+                        data: JSON.stringify({ productId: productId, userId: userId, quantity: quantity }),
+                        success: function (response) {
+                            alert("Ürün başarıyla sepete eklendi!");
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status === 401) {
+                                alert("Lütfen giriş yapınız.");
+                            } else {
+                                alert(xhr.responseText);
+                                alert("Ürün sepete eklenirken bir hata oluştu.");
+                            }
+                        }
+                    });
+                });
+            }
+
+            // Load Active Products
+            $.ajax({
+                url: ApiBaseUrl + "Products/GetActiveProducts", // ProductController action
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    var products = response;
+                    var productContainer = $('.product-grid-3');
+
+                    $.each(products, function (index, product) {
+                        var imageUrl = product.visuals && product.visuals.length > 0 ? product.visuals[0].photoUrl : '@Url.Content("/images/shop/placeholder.jpg")';
+                        var productHtml = `
+                            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <div class="product-img-action-wrap">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="shop-product-right.html">
+                                                <img class="default-img" src="${imageUrl}" alt="${product.name}">
+                                            </a>
+                                        </div>
+                                        <div class="product-action-1">
+                                            <a aria-label="Quick view" class="action-btn hover-up"><i class="far fa-search"></i></a>
+                                                            <a aria-label="Add To Wishlist" class="action-btn hover-up hover-up add-to-wishlist" data-id="${product.id}" href="#"><i class="far fa-heart"></i></a>
+                                            <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="far fa-exchange-alt"></i></a>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="product-content-wrap">
+                                        <div class="product-category">
+                                            <a href="shop-grid-right.html">${product.categoryName}</a>
+                                        </div>
+                                        <h2><a href="shop-product-right.html">${product.name}</a></h2>
+                                        <div class="rating-result" title="${product.rating}">
+                                            <span>
+                                                <span>${product.rating}%</span>
+                                            </span>
+                                        </div>
+                                        <div class="product-price">
+                                                <span>$${product.price}</span>
+                                        </div>
+                                        <div class="product-action-1 show">
+                                                            <a aria-label="Add To Cart" class="action-btn hover-up add-to-cart" data-id="${product.id} href="#"><i class="far fa-shopping-bag"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        productContainer.append(productHtml);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+            $.ajax({
+                url: ApiBaseUrl + "Categories/GetList/"
+,
+                dataType: 'json',
+                success: function (categories) {
+                    var categoryList = $('#categoryList');
+
+                    $.each(categories, function (index, category) {
+                        var categoryItem = `
+                            <li class="cat-item text-muted">
+                                <a href="#" class="category-link" data-id="${category.id}">${category.name}</a>
+                            </li>
+                        `;
+                        categoryList.append(categoryItem);
+                    });
+
+                    $(".category-link").on("click", function (e) {
+                        e.preventDefault();
+                        var categoryId = $(this).data("id");
+
+                        loadProductsByCategory(categoryId);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+            function loadProductsByCategory(categoryId) {
+                $.ajax({
+                    url: ApiBaseUrl + "Categories/GetProductsWithinCategory/" + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (products) {
+                        var productContainer = $('.product-grid-3');
+
+                        productContainer.empty();
+
+                        $.each(products, function (index, product) {
+                            var imageUrl = product.visuals && product.visuals.length > 0 ? product.visuals[0].photoUrl : '@Url.Content("/images/shop/placeholder.jpg")';
+                            var productHtml = `
+                                <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+                                    <div class="product-cart-wrap mb-30">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="shop-product-right.html">
+                                                    <img class="default-img" src="${imageUrl}" alt="${product.name}">
+                                                </a>
+                                            </div>
+                                            <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn hover-up"><i class="far fa-search"></i></a>
+                                                                <a aria-label="Add To Wishlist" class="action-btn hover-up hover-up add-to-wishlist" data-id="${product.id}" href="#"><i class="far fa-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="far fa-exchange-alt"></i></a>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="shop-grid-right.html">${product.categoryName}</a>
+                                            </div>
+                                            <h2><a href="shop-product-right.html">${product.name}</a></h2>
+                                            <div class="rating-result" title="${product.rating}">
+                                                <span>
+                                                    <span>${product.rating}%</span>
+                                                </span>
+                                            </div>
+                                            <div class="product-price">
+                                                    <span>$${product.price}</span>
+                                            </div>
+                                            <div class="product-action-1 show">
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up hover-up add-to-cart" data-id="${product.id} href="#"><i class="far fa-shopping-bag"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                            productContainer.append(productHtml);
+                        });
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+            $.ajax({
+                url: ApiBaseUrl + "Products/GetNewProducts/",
+                type: 'GET',
+                dataType: 'json',
+                success: function (products) {
+                    var productContainer = $('.product-sidebar');
+                    productContainer.empty();
+
+                    $.each(products, function (index, product) {
+                        var imageUrl = product.visuals && product.visuals.length > 0 ? product.visuals[0].photoUrl : '@Url.Content("~/images/shop/placeholder.jpg")';
+                        var productHtml = `
+                            <div class="single-post clearfix">
+                                <div class="image">
+                                    <img src="${imageUrl}" alt="${product.name}">
+                                </div>
+                                <div class="content pt-10">
+                                    <h5><a href="shop-product-detail.html">${product.name}</a></h5>
+                                    <p class="price mb-0 mt-5">$${product.price}</p>
+                                    <div class="product-rate">
+                                        <div class="product-rating" style="width:${product.rating}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        productContainer.append(productHtml);
+                    });
+                    initializeAddToWishlist();
+                    initializeAddToCart();
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            initializeAddToWishlist();
+            initializeAddToCart();
+        });
+
+
+        var token = localStorage.getItem("token");
+        var userRoles = [];
+        var apiUrl = "https://localhost:7163/";
+        var userId = ";"
+
+        if (token == null) {
+            $(".NotLoggedin").show();
+            $(".Loggedin").hide();
+        } else {
+            $(".NotLoggedin").hide();
+            $(".Loggedin").show();
+            var payload = parseJwt(token);
+            var username = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+            userRoles = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+            var userPicUrl = apiUrl + "Profile/" + payload["userPicUrl"];
+            userId = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            $("#userPic").attr("src", userPicUrl);
+            $("#UserName").html(username);
+        }
+
+        $(".Logout").click(function () {
+            localStorage.removeItem("token");
+            location.href = "/Home/Login";
+        });
+
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+
+    </script>
+}
